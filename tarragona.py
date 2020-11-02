@@ -18,20 +18,16 @@ from pandas import read_csv
 
 data = pd.read_excel (r'/content/Prediccion Carga.Variables Entrada.xlsx', sheet_name='Hoja2')
 
-"""Aqui lo que he hecho es importar la libreria pandas y la voy a utilizar llamandola "pd" por lo que cada vez que salga "pd." estoy llamando a una funcion dentro de esa libreria
+"""Importing pandas library as pd and we read the data from an excel document with the name and the number sheet."""
 
-Para leer un documento en excel utilizamos esa funcion. Declaramos data y le decimos que lea el documento con nombre X y la hoja numero Y
-
-Es necesario dropear datos?
-"""
-
+"""This is to drop some data and make the data more specific, I dont really think we need it.
 data['Temp'] = data['Temp'][data['Temp'].between(data['Temp'].quantile(.15), data['Temp'].quantile(.85))]
 data['Pneta'] = data['Pneta'][data['Pneta'].between(data['Pneta'].quantile(.15), data['Pneta'].quantile(.85))]
 data = data.dropna()
 
-Esto es para coger datos mas especificos. En la hoja de excel ya tengo puesto nombres por lo que ya puedo llamar a cada columna como si fuera una lista
+Esto es para coger datos mas especificos. En la hoja de excel ya tengo puesto nombres por lo que ya puedo llamar a cada columna como si fuera una lista"""
 
-"""Dividimos el dataset en training y testing para entrenar al modelo"""
+"""We split the dataset in training and testing to train the model using randomized search cv (we can use another one if we want)"""
 
 from sklearn.model_selection import train_test_split, RandomizedSearchCV
 # Split-out validation dataset
@@ -49,10 +45,7 @@ y = array[:,6]
 # We get 75% for training set
 X_train, X_test, y_train, y_test = train_test_split(X, y,test_size=0.25, random_state=10)
 
-"""Utilizamos otra libreria y colocamos los datos, le decimos que las primeras 6 columnas son datos y la 6 es el resultado
-Dividimos los datos para entrenar y testear
-
-Mostramos el aspecto del dataset y lo graficamos para ver la tendencia y si hay algún outlier si no hemos hecho la limpia todavía
+"""We need to tell the model which information is for training and what column is the results
 """
 
 import matplotlib.pyplot as plt
@@ -71,9 +64,9 @@ plt.ylabel('PNeta')
 plt.show()
 
 """##Differents Models Regressors
+We can use different models, each model will train in an specific way so there is models more effective than others depending on the data.
+We train the model and we predict the results with X_test, then we compare the results between y_test and y_test_pred
 
-Se pueden utilizar diferentes modelos, cada modelo entrenara de una manera por lo que hay modelos mas efectivos que otros segun los datos que introduzcamos. Como veis, tenemos que importar mas librerias para poder utilizarlos. 
-Clf es el modelo, lo creamos, lo entrenamos y predecimos los resultados con X_test, luego se comparan los resultados entre y_test (los resultados reales) e y_test_pred (los resultados del modelo)
 
 **Decision Tree**
 """
@@ -118,8 +111,8 @@ y_train_pred = randomNeigh.predict(X_train)
 print("RMSE Neighbors Tunned Train =", math.sqrt(abs(metrics.mean_squared_error(y_train, y_train_pred))))
 
 """**KNeighbors Hiper-Parameter Tunning, Randomized Search CV**
+In each model there are different parameters, when you modify them, the model takes default parameters but we can modify them to get better results
 
-Dentro de cada modelo hay varios parametros. Cuando no los modificas, el modelo coge parametros por defecto pero puedes modificarlos para intentar tener un resultado mas preciso. Al final os dareis cuenta que te dicen cuales son los mejores parametros, con eso podreis ir modificando el modelo
 """
 
 #Neighbors with Hiper-tunning
