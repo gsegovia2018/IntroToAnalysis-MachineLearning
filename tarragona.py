@@ -16,7 +16,7 @@ from pandas import read_csv
 
 #data = pd.read_excel (r'/content/Datos de Carga Base Tarragona (borrador inicial).xlsx', sheet_name='Hoja1')
 
-data = pd.read_excel (r'/content/Prediccion Carga.Variables Entrada.xlsx', sheet_name='Hoja2')
+data = pd.read_excel (r'Datos de Carga Base Tarragona (borrador inicial).xlsx', sheet_name='Hoja1')
 
 """Importing pandas library as pd and we read the data from an excel document with the name and the number sheet."""
 
@@ -34,8 +34,8 @@ from sklearn.model_selection import train_test_split, RandomizedSearchCV
 array = data.values
 
 #Hoja2
-X = array[:,0:6]
-y = array[:,6]
+X = array[:,0:1]
+y = array[:,1]
 
 #Hoja3
 #X = array[:,0:1]
@@ -57,10 +57,9 @@ print(data.head())
 #PLOTTING TREND
 
 plt.figure(figsize=(30,10))
-plt.scatter(data['Temp'], data['Pneta'])
-plt.scatter(data['Humedad'], data['Pneta'])
-plt.xlabel('Temperatura/Humedad')
-plt.ylabel('PNeta')
+plt.scatter(data['Temperatura'], data['Pneta'])
+plt.xlabel('Temperature')
+plt.ylabel('Power')
 plt.show()
 
 """##Differents Models Regressors
@@ -85,9 +84,6 @@ clf = clf.fit(X_train, y_train)
 
 y_test_pred = clf.predict(X_test)
 print("RMSE =", math.sqrt(abs(metrics.mean_squared_error(y_test, y_test_pred))))
-y_train_pred = randomNeigh.predict(X_train)
-print("RMSE Neighbors Tunned Train =", math.sqrt(abs(metrics.mean_squared_error(y_train, y_train_pred))))
-print(y_train-y_train_pred)
 
 """**Decision Tree Hiper-Parameter Tunning**
 
@@ -107,8 +103,6 @@ neigh = KNeighborsRegressor()
 neigh = neigh.fit(X_train, y_train) 
 y_test_pred = neigh.predict(X_test)
 print("RMSE Neighbors Regressor =", math.sqrt(abs(metrics.mean_squared_error(y_test, y_test_pred))))
-y_train_pred = randomNeigh.predict(X_train)
-print("RMSE Neighbors Tunned Train =", math.sqrt(abs(metrics.mean_squared_error(y_train, y_train_pred))))
 
 """**KNeighbors Hiper-Parameter Tunning, Randomized Search CV**
 In each model there are different parameters, when you modify them, the model takes default parameters but we can modify them to get better results
